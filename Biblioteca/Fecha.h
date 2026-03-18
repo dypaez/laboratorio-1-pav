@@ -7,11 +7,8 @@ class DtFecha{
     int mes;
     int anio;
     public:
-    void setDia(int);
     int getDia();
-    void setMes(int);
     int getMes();
-    void setAnio(int);
     int getAnio();
     
     //Constructores
