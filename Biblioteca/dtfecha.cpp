@@ -20,9 +20,9 @@ int DtFecha::getDia(){
 int DtFecha::getMes(){
     return this->mes;
 }
-int DtFecha::getAnio{
+int DtFecha::getAnio(){
     return this->anio;
 }
-void DtFecha::printFecha{
+void DtFecha::printFecha(){
     cout << this->dia << "/" << this->mes << "/" << this->anio;
 }
