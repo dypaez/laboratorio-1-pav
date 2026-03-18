@@ -1,5 +1,5 @@
-#ifndef FECHA_H
-#define FECHA_H
+#ifndef DTFECHA_H
+#define DTFECHA_H
 
 class DtFecha{
     private:
