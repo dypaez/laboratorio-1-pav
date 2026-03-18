@@ -10,7 +10,7 @@ class DtFecha{
     int getDia();
     int getMes();
     int getAnio();
-    
+    void printFecha();
     //Constructores
     DtFecha(int dia, int mes, int anio);
     
