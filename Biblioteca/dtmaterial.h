@@ -18,6 +18,7 @@ class DtMaterial{
 		string getTitulo();
 		int getAnioPublicacion();
 		float getMultaBase();
+		void imprimirDatos();
 		//Destructor
 		~DtMaterial();
 };

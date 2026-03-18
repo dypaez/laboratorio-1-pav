@@ -20,6 +20,11 @@ int DtMaterial::getAnioPublicacion(){
 float DtMaterial::getMultaBase(){
     return this->multaBase;
 }
+void DtMaterial::imprimirDatos(){
+    cout << "Codigo: " << this->codigo << endl
+         << "Titulo: " << this->titulo << endl
+         << "Año de publicación: " << this->anioPublicacion << endl;
+}
 DtMaterial::~DtMaterial(){
     //Vacío porque no se crea punteros
 }

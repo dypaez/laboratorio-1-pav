@@ -10,6 +10,7 @@ class DtLibro : public DtMaterial{
         DtLibro(string codigo, string titulo, string autor, int anioPublicacion, float multaBase, int cantPaginas);
         string getAutor();
         int getCantPaginas();
+        void imprimirDatosLibro();
         ~DtLibro();
 };
 

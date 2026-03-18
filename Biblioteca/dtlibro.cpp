@@ -10,6 +10,11 @@ string DtLibro::getAutor(){
 int DtLibro::getCantPaginas(){
     return this->cantPaginas;
 }
+void DtLibro::imprimirDatosLibro(){
+    DtMaterial::imprimirDatos();
+    cout << "Autor: " << this->autor << endl
+         << "Cantidad de páginas: " << this->cantPaginas << endl;
+}
 DtLibro::~DtLibro(){
     //Vacio porque no hay punteros.
 }

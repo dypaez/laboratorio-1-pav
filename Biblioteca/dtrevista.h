@@ -10,6 +10,7 @@ class DtRevista : public DtMaterial{
         DtRevista(string codigo, string titulo, int numeroEdicion, int anioPublicacion, float multaBase, bool esMensual);
         int getNumeroEdicion();
         bool getMensual();
+        void imprimirDatosRevista();
         ~DtRevista();
 };
 

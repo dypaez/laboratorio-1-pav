@@ -10,6 +10,11 @@ int DtRevista::getNumeroEdicion(){
 bool DtRevista::getMensual(){
     return this->esMensual;
 }
+void DtRevista::imprimirDatosRevista(){
+    DtMaterial::imprimirDatos();
+    cout << "Número de edición: " << this->numeroEdicion << endl
+         << "Es mensual: " << (this->esMensual ? "Sí" : "No") << endl;
+}
 DtRevista::~DtRevista(){
     //Vacio porque no tiene punteros
 }
