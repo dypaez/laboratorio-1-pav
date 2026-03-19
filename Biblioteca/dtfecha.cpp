@@ -1,8 +1,9 @@
 #include "dtfecha.h"
-#include <iostream>
-using namespace std;
-
-
+DtFecha::DtFecha(){
+    this->anio = 2000;
+    this->mes = 1;
+    this->dia = 1;
+}
 DtFecha::DtFecha(int dia, int mes, int anio){
     this->anio = (anio > 0) ? anio : 2000;
     this->mes = (mes >= 1 && mes <= 12) ? mes : 1;
@@ -18,9 +19,7 @@ int DtFecha::getMes(){
 int DtFecha::getAnio(){
     return this->anio;
 }
-void DtFecha::printFecha(){
-    cout << this->dia << "/" << this->mes << "/" << this->anio;
-}
+
 DtFecha::~DtFecha(){
     //No hay codigo porque no genera punteros.
 }

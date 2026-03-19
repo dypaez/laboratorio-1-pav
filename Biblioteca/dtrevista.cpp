@@ -1,6 +1,6 @@
 #include "dtrevista.h"
-#include <string>
-DtRevista::DtRevista(string c, string t, int numEd, int ap, float mb, bool esMensual) : DtMaterial(c, t, ap, mb) {
+using namespace std;
+DtRevista::DtRevista(string c, string t, int numEd, int ap, bool esMensual) : DtMaterial(c, t, ap, 2.0) {
     this->numeroEdicion = numEd;
     this->esMensual = esMensual;
 }
@@ -10,11 +10,7 @@ int DtRevista::getNumeroEdicion(){
 bool DtRevista::getMensual(){
     return this->esMensual;
 }
-void DtRevista::imprimirDatosRevista(){
-    DtMaterial::imprimirDatos();
-    cout << "Número de edición: " << this->numeroEdicion << endl
-         << "Es mensual: " << (this->esMensual ? "Sí" : "No") << endl;
-}
+
 DtRevista::~DtRevista(){
     //Vacio porque no tiene punteros
 }
