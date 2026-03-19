@@ -1,21 +1,20 @@
 #ifndef DTMATERIAL_H
 #define DTMATERIAL_H
 #include <iostream>
-#include <string>
 using namespace std;
 
 class DtMaterial{
 	private:
-		string codigo;
-		string titulo;
+		std::string codigo;
+		std::string titulo;
 		int anioPublicacion;
 		float multaBase;
 	public:
 		//Constructor
-		DtMaterial(string codigo, string titulo, int anioPublicacion, float multaBase);
+		DtMaterial(std::string codigo, std::string titulo, int anioPublicacion, float multaBase);
 		//Operaciones
-		string getCodigo();
-		string getTitulo();
+		std::string getCodigo();
+		std::string getTitulo();
 		int getAnioPublicacion();
 		float getMultaBase();
 		void imprimirDatos();

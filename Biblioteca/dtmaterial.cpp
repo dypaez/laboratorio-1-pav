@@ -1,5 +1,5 @@
 #include "dtmaterial.h"
-
+#include <string>
 
 DtMaterial::DtMaterial(string codigo, string titulo, int anioPublicacion, float multaBase){
     this->codigo = codigo;
