@@ -1,5 +1,5 @@
 #include "dtlibro.h"
-
+#include <string>
 DtLibro::DtLibro(string c, string t, string a, int ap, float mb, int cantP) : DtMaterial(c, t, ap, mb) {
     this->autor = a;
     this->cantPaginas = cantP;

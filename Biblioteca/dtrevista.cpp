@@ -1,5 +1,5 @@
 #include "dtrevista.h"
-
+#include <string>
 DtRevista::DtRevista(string c, string t, int numEd, int ap, float mb, bool esMensual) : DtMaterial(c, t, ap, mb) {
     this->numeroEdicion = numEd;
     this->esMensual = esMensual;

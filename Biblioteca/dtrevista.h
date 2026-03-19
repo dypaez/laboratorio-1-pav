@@ -7,7 +7,7 @@ class DtRevista : public DtMaterial{
         int numeroEdicion;
         bool esMensual;
     public:
-        DtRevista(string codigo, string titulo, int numeroEdicion, int anioPublicacion, float multaBase, bool esMensual);
+        DtRevista(std::string codigo, std::string titulo, int numeroEdicion, int anioPublicacion, float multaBase, bool esMensual);
         int getNumeroEdicion();
         bool getMensual();
         void imprimirDatosRevista();

@@ -4,11 +4,11 @@
 
 class DtLibro : public DtMaterial{
     private:
-        string autor;
+        std::string autor;
         int cantPaginas;
     public :
-        DtLibro(string codigo, string titulo, string autor, int anioPublicacion, float multaBase, int cantPaginas);
-        string getAutor();
+        DtLibro(std::string codigo, std::string titulo, std::string autor, int anioPublicacion, float multaBase, int cantPaginas);
+        std::string getAutor();
         int getCantPaginas();
         void imprimirDatosLibro();
         ~DtLibro();
