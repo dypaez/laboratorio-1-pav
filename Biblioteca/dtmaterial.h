@@ -1,8 +1,6 @@
 #ifndef DTMATERIAL_H
 #define DTMATERIAL_H
-#include <iostream>
-using namespace std;
-
+#include <string>
 class DtMaterial{
 	private:
 		std::string codigo;
@@ -17,7 +15,6 @@ class DtMaterial{
 		std::string getTitulo();
 		int getAnioPublicacion();
 		float getMultaBase();
-		void imprimirDatos();
 		//Destructor
 		~DtMaterial();
 };
