@@ -1,21 +1,32 @@
 #ifndef LECTOR_H
 #define LECTOR_H
+
+#include <iostream>
 #include <string>
+using namespace std;
 #include "dtfecha.h"
+#include "prestamo.h"
+
 class Lector {
     private:
-        std::string ci;
-        std::string nombre;
+        string ci;
+        string nombre;
         DtFecha fechaRegistro;
+        Prestamo* prestamos[10];
     public:
-        Lector(std::string ci, std::string nombre, int dia, int mes, int anio);
-        std::string getCi();
-        std::string getNombre();
+        Lector();
+        Lector(string ci, string nombre, int dia, int mes, int anio);
+        string getCi();
+        string getNombre();
         DtFecha getFechaRegistro();
-        void setCi(std::string);
-        void setNombre(std::string);
+        bool prestamoLleno();
+        bool agregarPrestamo(Prestamo* p);
+        void setCi(string);
+        void setNombre(string);
         void setFechaRegistro(DtFecha);
-        ~Lector();
+        
+
+     ~Lector();
 };
 
 #endif
