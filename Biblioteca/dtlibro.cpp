@@ -1,19 +1,3 @@
-<<<<<<< Updated upstream
-#include "dtlibro.h"
-using namespace std;
-DtLibro::DtLibro(string c, string t, string a, int ap, int cantP) : DtMaterial(c, t, ap, 5.0) {
-    this->autor = a;
-    this->cantPaginas = cantP;
-}
-string DtLibro::getAutor(){
-    return this->autor;
-}
-int DtLibro::getCantPaginas(){
-    return this->cantPaginas;
-}
-DtLibro::~DtLibro(){
-    //Vacio porque no hay punteros.
-=======
 #include "dtlibro.h"
 #include "constantes.h"
 #include <iostream>
@@ -35,5 +19,4 @@ void DtLibro::mostrarDatos(){
 }
 DtLibro::~DtLibro(){
     //Vacio porque no hay punteros.
->>>>>>> Stashed changes
 }
