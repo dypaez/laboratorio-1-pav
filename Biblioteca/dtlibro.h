@@ -5,7 +5,7 @@ class DtLibro : public DtMaterial{
     private:
         std::string autor;
         int cantPaginas;
-    public:
+    public :
         DtLibro(std::string codigo, std::string titulo, std::string autor, int anioPublicacion, int cantPaginas);
         std::string getAutor();
         int getCantPaginas();
