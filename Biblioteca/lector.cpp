@@ -1,6 +1,6 @@
 using namespace std;
 #include "lector.h"
-
+using namespace std;
 Lector::Lector(){
     this->fechaRegistro = DtFecha(0,0,0);
     this->ci = "";
@@ -13,7 +13,7 @@ Lector::Lector(string ci, string nombre, int dia, int mes, int anio){
     this->fechaRegistro = DtFecha(dia, mes, anio);
     this->ci = ci;
     this->nombre = nombre;
-    for(int i = 0; i<10; i++){
+    for(int i = 0; i<MAX_PRESTAMOS; i++){
         this->prestamos[i] = nullptr;
     }
 }
@@ -39,7 +39,7 @@ bool Lector::prestamoLleno(){
 }
 bool Lector::agregarPrestamo(Prestamo* p) {
     if(!prestamoLleno()){
-        for(int i=0; i<10; i++){
+        for(int i=0; i<MAX_PRESTAMOS; i++){
             if(prestamos[i] == nullptr){
                 prestamos[i] = p;
                 return true; //Éxito
