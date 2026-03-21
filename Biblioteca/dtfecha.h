@@ -3,21 +3,19 @@
 
 class DtFecha{
     private:
-    int dia;
-    int mes;
-    int anio;
+        int dia;
+        int mes;
+        int anio;
     public:
-    int getDia();
-    int getMes();
-    int getAnio();
-    void printFecha();
-    //Constructores
-    DtFecha(int dia, int mes, int anio);
-    
-    //Destructor
-    ~DtFecha();
+        //Constructores
+        DtFecha();
+        DtFecha(int dia, int mes, int anio);
+        //Operaciones
+        int getDia();
+        int getMes();
+        int getAnio();
+        //Destructor
+        ~DtFecha();
 };
-
-
 
 #endif
