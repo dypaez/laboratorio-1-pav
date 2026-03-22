@@ -1,6 +1,6 @@
 #include "libro.h"
 using namespace std;
-Libro::Libro(DtLibro dtl) : Material(dtl.getCodigo(), dtl.getTitulo(), dtl.getAnioPublicacion(), 5.0) {
+Libro::Libro(DtLibro dtl) : Material(dtl.getCodigo(), dtl.getTitulo(), dtl.getAnioPublicacion(), dtl.getMultaBase()) {
     this->autor = dtl.getAutor();
     this->cantPaginas = dtl.getCantPaginas();
 }
