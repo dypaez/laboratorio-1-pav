@@ -1,4 +1,5 @@
 #include "dtmaterial.h"
+#include <iostream>
 using namespace std;
 DtMaterial::DtMaterial(string codigo, string titulo, int anioPublicacion, float multaBase){
     this->codigo = codigo;
@@ -17,6 +18,12 @@ int DtMaterial::getAnioPublicacion(){
 }
 float DtMaterial::getMultaBase(){
     return this->multaBase;
+}
+void DtMaterial::mostrarDatos(){
+    cout << "Código: " << this->codigo << endl <<
+            "Título: " << this->titulo << endl <<
+            "Año de publicación: " << this->anioPublicacion << endl;
+
 }
 DtMaterial::~DtMaterial(){
     //Vacío porque no se crea punteros

@@ -9,6 +9,7 @@ class DtRevista : public DtMaterial{
         DtRevista(std::string codigo, std::string titulo, int numeroEdicion, int anioPublicacion, bool esMensual);
         int getNumeroEdicion();
         bool getMensual();
+        void mostrarDatos() override;
         ~DtRevista();
 };
 

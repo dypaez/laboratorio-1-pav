@@ -1,8 +1,9 @@
 #include "revista.h"
+
 using namespace std;
-Revista::Revista(string c, string t, int numEd, int ap, bool esMensual) : Material(c, t, ap, 2.0) {
-    this->numeroEdicion = numEd;
-    this->esMensual = esMensual;
+Revista::Revista(DtRevista dtr) : Material(dtr.getCodigo(), dtr.getTitulo(), dtr.getAnioPublicacion(), 2.0) {
+    this->numeroEdicion = dtr.getNumeroEdicion();
+    this->esMensual = dtr.getMensual();
 }
 int Revista::getNumeroEdicion(){
     return this->numeroEdicion;
