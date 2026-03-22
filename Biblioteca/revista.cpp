@@ -1,7 +1,7 @@
 #include "revista.h"
 
 using namespace std;
-Revista::Revista(DtRevista dtr) : Material(dtr.getCodigo(), dtr.getTitulo(), dtr.getAnioPublicacion(), 2.0) {
+Revista::Revista(DtRevista dtr) : Material(dtr.getCodigo(), dtr.getTitulo(), dtr.getAnioPublicacion(), dtr.getMultaBase()) {
     this->numeroEdicion = dtr.getNumeroEdicion();
     this->esMensual = dtr.getMensual();
 }
