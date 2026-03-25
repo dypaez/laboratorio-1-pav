@@ -1,9 +1,9 @@
 #include "libro.h"
 #include "constantes.h"
 using namespace std;
-Libro::Libro(DtLibro dtl) : Material(dtl.getCodigo(), dtl.getTitulo(), dtl.getAnioPublicacion()) {
-    this->autor = dtl.getAutor();
-    this->cantPaginas = dtl.getCantPaginas();
+Libro::Libro(DtLibro* dtl) : Material(dtl->getCodigo(), dtl->getTitulo(), dtl->getAnioPublicacion()) {
+    this->autor = dtl->getAutor();
+    this->cantPaginas = dtl->getCantPaginas();
 }
 string Libro::getAutor(){
     return this->autor;
@@ -17,9 +17,19 @@ int Libro::getCantPaginas(){
 void Libro::setCantPaginas(int cantPaginas){
     this->cantPaginas = cantPaginas;
 }
-float calcularMulta(int diasAtraso){
+float Libro::calcularMulta(int diasAtraso){
     return (diasAtraso * MULTA_BASE_LIBRO);
 }
+DtMaterial* Libro::getDtMaterial(){
+    return new DtLibro(
+        this->getCodigo(),
+        this->getTitulo(),
+        this->getAutor(),
+        this->getAnioPublicacion(),
+        this->getCantPaginas()
+    );
+}
+
 Libro::~Libro(){
     //Vacio porque no hay punteros.
 }

@@ -7,12 +7,13 @@ class Libro : public Material{
         std::string autor;
         int cantPaginas;
     public :
-        Libro(DtLibro dtl);
+        Libro(DtLibro* dtl);
         std::string getAutor();
         int getCantPaginas();
         void setAutor(std::string);
         void setCantPaginas(int);
         float calcularMulta(int diasAtraso) override;
+        DtMaterial* getDtMaterial() override;
         ~Libro();
 };
 #endif
