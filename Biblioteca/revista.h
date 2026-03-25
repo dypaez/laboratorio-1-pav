@@ -12,6 +12,7 @@ class Revista : public Material{
         bool getMensual();
         void setNumeroEdicion(int);
         void setMensual(bool);
+        float calcularMulta(int diasAtraso) override;
         ~Revista();
 };
 #endif

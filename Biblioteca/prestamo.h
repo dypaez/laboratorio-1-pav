@@ -5,13 +5,14 @@
 #include "material.h"
 class Prestamo{
 	private:
-		DtFecha fechaPrestamo;
+		DtFecha* fechaPrestamo;
 		int diasPermitidos;
 		Material* material;
 	public:
-		Prestamo(int dia, int mes, int anio, int dias, Material* mat);
-		DtFecha getFecha();
+		Prestamo(DtFecha* fechaPrestamo, Material* mat, int diasPermitidos);
+		DtFecha* getFecha();
 		int getDiasPermitidos();
+		Material* getMaterial();
 		~Prestamo();
 };
 

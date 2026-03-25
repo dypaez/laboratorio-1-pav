@@ -12,6 +12,7 @@ class Libro : public Material{
         int getCantPaginas();
         void setAutor(std::string);
         void setCantPaginas(int);
+        float calcularMulta(int diasAtraso) override;
         ~Libro();
 };
 #endif

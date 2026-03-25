@@ -1,11 +1,10 @@
 #include "material.h"
 using namespace std;
 
-Material::Material(std::string codigo, std::string titulo, int anioPublicacion, float multaBase){
+Material::Material(std::string codigo, std::string titulo, int anioPublicacion){
     this->codigo = codigo;
     this->titulo = titulo;
     this->anioPublicacion = anioPublicacion;
-    this->multaBase = multaBase;
 }
 string Material::getCodigo(){
     return this->codigo;
@@ -15,9 +14,6 @@ string Material::getTitulo(){
 }
 int Material::getAnioPublicacion(){
     return this->anioPublicacion;
-}
-float Material::calcularMulta(int diasAtraso){
-    return (this->multaBase * diasAtraso);
 }
 void Material::setCodigo(string codigo) {
     this->codigo = codigo;

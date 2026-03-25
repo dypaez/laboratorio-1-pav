@@ -1,16 +1,8 @@
 using namespace std;
 #include "lector.h"
 using namespace std;
-Lector::Lector(){
-    this->fechaRegistro = DtFecha(0,0,0);
-    this->ci = "";
-    this->nombre = "";
-    for(int i = 0; i<10; i++){
-        this->prestamos[i] = nullptr;
-    }
-}
-Lector::Lector(string ci, string nombre, int dia, int mes, int anio){
-    this->fechaRegistro = DtFecha(dia, mes, anio);
+Lector::Lector(string ci, string nombre, DtFecha* fechaRegistro){
+    this->fechaRegistro = fechaRegistro;
     this->ci = ci;
     this->nombre = nombre;
     for(int i = 0; i<MAX_PRESTAMOS; i++){
@@ -19,14 +11,14 @@ Lector::Lector(string ci, string nombre, int dia, int mes, int anio){
 }
 
 string Lector::getCi() {
-    return this->ci;
+    return ci;
 }
 
 string Lector::getNombre() {
-    return this->nombre;
+    return nombre;
 }
 
-DtFecha Lector::getFechaRegistro() {
+DtFecha* Lector::getFechaRegistro() {
     return this->fechaRegistro;
 }
 bool Lector::prestamoLleno(){
@@ -57,7 +49,7 @@ void Lector::setNombre(string nombre) {
     this->nombre = nombre;
 }
 
-void Lector::setFechaRegistro(DtFecha fechaRegistro) {
+void Lector::setFechaRegistro(DtFecha* fechaRegistro) {
     this->fechaRegistro = fechaRegistro;
 }
 

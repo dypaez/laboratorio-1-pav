@@ -8,18 +8,15 @@ class Material{
 		std::string codigo;
 		std::string titulo;
 		int anioPublicacion;
-		float multaBase;
 	public:
-		Material(std::string codigo, std::string titulo, int anioPublicacion, float multaBase);
+		Material(std::string codigo, std::string titulo, int anioPublicacion);
 		std::string getCodigo();
 		std::string getTitulo();
 		int getAnioPublicacion();
-		float calcularMulta(int diasAtraso);
 		void setCodigo(std::string);
         void setTitulo(std::string);
         void setAnioPublicacion(int);
-		
-	
+		virtual float calcularMulta(int diasAtraso) = 0;
 		~Material();
 };
 
