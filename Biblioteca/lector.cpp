@@ -30,16 +30,13 @@ bool Lector::prestamoLleno(){
     return true;
 }
 bool Lector::agregarPrestamo(Prestamo* p) {
-    if(!prestamoLleno()){
-        for(int i=0; i<MAX_PRESTAMOS; i++){
-            if(prestamos[i] == nullptr){
-                prestamos[i] = p;
-                return true; //Éxito
-            }
+    for(int i=0; i<MAX_PRESTAMOS; i++){
+        if(prestamos[i] == nullptr){
+            prestamos[i] = p;
+            return true; //Éxito
         }
-    }else{
-        return false; //ERROR
     }
+    return false; //Error
 }
 void Lector::setCi(string ci) {
     this->ci = ci;

@@ -8,7 +8,6 @@ class DtFecha{
         int anio;
     public:
         //Constructores
-        DtFecha();
         DtFecha(int dia, int mes, int anio);
         //Operaciones
         int getDia();

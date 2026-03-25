@@ -13,10 +13,11 @@ class Material{
 		std::string getCodigo();
 		std::string getTitulo();
 		int getAnioPublicacion();
+        void setAnioPublicacion(int);
 		void setCodigo(std::string);
         void setTitulo(std::string);
-        void setAnioPublicacion(int);
 		virtual float calcularMulta(int diasAtraso) = 0;
+		virtual DtMaterial* getDtMaterial() = 0;
 		~Material();
 };
 
