@@ -12,11 +12,11 @@ Lector::Lector(string ci, string nombre, DtFecha* fechaRegistro){
 }
 
 string Lector::getCi() {
-    return ci;
+    return this->ci;
 }
 
 string Lector::getNombre() {
-    return nombre;
+    return this->nombre;
 }
 
 DtFecha* Lector::getFechaRegistro() {
