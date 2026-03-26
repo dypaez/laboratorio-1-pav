@@ -13,6 +13,7 @@ class DtFecha{
         int getDia();
         int getMes();
         int getAnio();
+        int enDias();
         //Destructor
         ~DtFecha();
 };
