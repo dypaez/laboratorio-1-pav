@@ -14,6 +14,12 @@ int DtFecha::getMes(){
 int DtFecha::getAnio(){
     return this->anio;
 }
+int DtFecha::enDias(){
+    int diasAnio=this->getAnio()*365;
+    int diasMes=(this->getMes()-1)*30;
+    int dias = this->getDia();
+    return dias+diasMes+diasAnio;
+}
 
 DtFecha::~DtFecha(){
     //No hay codigo porque no genera punteros.

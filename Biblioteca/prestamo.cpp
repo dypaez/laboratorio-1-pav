@@ -14,4 +14,5 @@ Material* Prestamo::getMaterial(){
 	return this->material;
 }
 Prestamo::~Prestamo(){
+	delete fechaPrestamo;
 }
