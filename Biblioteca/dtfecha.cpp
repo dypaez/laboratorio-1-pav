@@ -1,9 +1,4 @@
 #include "dtfecha.h"
-DtFecha::DtFecha(){
-    this->anio = 2000;
-    this->mes = 1;
-    this->dia = 1;
-}
 DtFecha::DtFecha(int dia, int mes, int anio){
     this->anio = (anio > 0) ? anio : 2000;
     this->mes = (mes >= 1 && mes <= 12) ? mes : 1;
@@ -18,6 +13,12 @@ int DtFecha::getMes(){
 }
 int DtFecha::getAnio(){
     return this->anio;
+}
+int DtFecha::enDias(){
+    int diasAnio=this->getAnio()*365;
+    int diasMes=(this->getMes()-1)*30;
+    int dias = this->getDia();
+    return dias+diasMes+diasAnio;
 }
 
 DtFecha::~DtFecha(){

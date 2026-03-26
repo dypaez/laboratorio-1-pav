@@ -1,16 +1,19 @@
 #ifndef REVISTA_H
 #define REVISTA_H
 #include "material.h"
+#include "dtrevista.h"
 class Revista : public Material{
     private:
         int numeroEdicion;
         bool esMensual;
     public:
-        Revista(std::string codigo, std::string titulo, int numeroEdicion, int anioPublicacion, bool esMensual);
+        Revista(DtRevista* dtr);
         int getNumeroEdicion();
         bool getMensual();
         void setNumeroEdicion(int);
-        void setEsMensual(bool);
+        void setMensual(bool);
+        float calcularMulta(int diasAtraso) override;
+        DtMaterial* getDtMaterial() override;
         ~Revista();
 };
 #endif

@@ -15,6 +15,7 @@ class DtMaterial{
 		std::string getTitulo();
 		int getAnioPublicacion();
 		float getMultaBase();
+		virtual void mostrarDatos();
 		//Destructor
 		~DtMaterial();
 };
