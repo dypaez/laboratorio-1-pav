@@ -17,8 +17,7 @@ class DtMaterial{
 		float getMultaBase();
 		virtual void mostrarDatos();
 		//Destructor
-		virtual ~DtMaterial();
+		~DtMaterial();
 };
-
 
 #endif
