@@ -4,9 +4,11 @@
 #include "dtfecha.h"
 #include <iostream>
 #include <stdexcept>
-#include <locale>
 #include <cctype>
 #include <sstream>
+#ifdef _WIN32
+    #include <windows.h>
+#endif
 using namespace std;
 /*
 ARREGLOS
@@ -34,118 +36,118 @@ bool existeMaterial(string codigo){
     return false;
 }
 void mostrarMenu(){
-    setlocale(LC_ALL, "");
-    cout << "Bienvenido!\nElija la opción:" << endl <<
+    
+    cout << "Bienvenido!\nElija la opcion:" << endl <<
     "1) Registrar lector" << endl <<
-    "2) Agregar préstamo" << endl <<
+    "2) Agregar prestamo" << endl <<
     "3) Obtener materiales prestados" << endl <<
-            "4) Consultar multa de material" << endl <<
-            "5) Ver préstamos antes de fecha" << endl <<
-            "6) Agregar material" << endl <<
-            "0) Salir" << endl;
+    "4) Consultar multa de material" << endl <<
+    "5) Ver prestamos antes de fecha" << endl <<
+    "6) Agregar material" << endl <<
+    "0) Salir" << endl;
 }
 void registrarLector(string ci, string nombre, DtFecha* fechaRegistro){
     if(existeLector(ci)){ //Si ya existe Lector registrado con la CI pasada por parametro
         throw invalid_argument("Ya existe un usuario registrado con esa CI.");
     }
-    for(int i=0;i<MAX_LECTORES;i++){ //Iterar por la colección de lectores.
-        if(lectores[i]==nullptr){ //En el primer espacio vacío
+    for(int i=0;i<MAX_LECTORES;i++){ //Iterar por la coleccion de lectores.
+        if(lectores[i]==nullptr){ //En el primer espacio vacio
             lectores[i] = new Lector(ci, nombre, fechaRegistro); //Crear una instancia de Lector.
-            cout << "Lector ingresado con éxito." << endl; //Avisar al usuario.
-            return; //Cortar la función
+            cout << "Lector ingresado con exito." << endl; //Avisar al usuario.
+            return; //Cortar la funcion
         }
     }//Si no hay espacio...
-    throw invalid_argument("No hay espacio en la colección de lectores."); //Lanzar error.
+    throw invalid_argument("No hay espacio en la coleccion de lectores."); //Lanzar error.
 }
 void agregarPrestamo(string ci, string codigoMaterial, DtFecha * fechaPrestamo, int diasPermitidos){
-    for(int i=0; i<MAX_LECTORES; i++){ //Iterando en la colección de lectores
-        if(lectores[i]!=nullptr && lectores[i]->getCi() == ci){ //Si el índice actual NO es nulo y la cédula es igual a la ingresada por parámetros
-            if(lectores[i]->prestamoLleno()){ //Se revisa si tiene la lista de préstamos llena
-                throw invalid_argument("El lector ya tiene el máximo de préstamos."); //En caso de tenerla, lanza error, cancelando el proceso
+    for(int i=0; i<MAX_LECTORES; i++){ //Iterando en la coleccion de lectores
+        if(lectores[i]!=nullptr && lectores[i]->getCi() == ci){ //Si el indice actual NO es nulo y la cedula es igual a la ingresada por parametros
+            if(lectores[i]->prestamoLleno()){ //Se revisa si tiene la lista de prestamos llena
+                throw invalid_argument("El lector ya tiene el maximo de prestamos."); //En caso de tenerla, lanza error, cancelando el proceso
             } //Pero si no...
             Material* material; // Se declara un puntero a Material
-            for(int j=0; j<MAX_MATERIALES; j++){ //Iterando en la colección de materiales
-                if(materiales[j]!=nullptr && materiales[j]->getCodigo() == codigoMaterial){ //Si el material actual NO es nulo y su código es igual al pasado por parámetros
-                    material = materiales[j]; //el puntero a material declarado anteriormente, ahora apunta al material pasado por parámetro
-                    Prestamo* prestamo = new Prestamo(fechaPrestamo, material, diasPermitidos); //Se crea una instancia de la clase Préstamo.
-                    lectores[i]->agregarPrestamo(prestamo); //Y posteriormente, se añade a la colección de préstamos del lector.
-                    cout << "Prestamo registrado con éxito." << endl; //¡ÉXITO!
+            for(int j=0; j<MAX_MATERIALES; j++){ //Iterando en la coleccion de materiales
+                if(materiales[j]!=nullptr && materiales[j]->getCodigo() == codigoMaterial){ //Si el material actual NO es nulo y su codigo es igual al pasado por parametros
+                    material = materiales[j]; //el puntero a material declarado anteriormente, ahora apunta al material pasado por parametro
+                    Prestamo* prestamo = new Prestamo(fechaPrestamo, material, diasPermitidos); //Se crea una instancia de la clase Prestamo.
+                    lectores[i]->agregarPrestamo(prestamo); //Y posteriormente, se añade a la coleccion de prestamos del lector.
+                    cout << "Prestamo registrado con exito." << endl; //¡EXITO!
                     return;
                 }
-            }//Si no se hallan coincidencias con el código de material indicado...
+            }//Si no se hallan coincidencias con el codigo de material indicado...
             throw invalid_argument("El material especificado no existe."); //Lanzar error.
         }
-    }//Si no se encuentran coincidencias con la cédula indicada por parámetro...
+    }//Si no se encuentran coincidencias con la cedula indicada por parametro...
     throw invalid_argument("El lector ingresado no existe."); //Lanzar error.
 }
 DtMaterial** obtenerMaterialesPrestados(string ci, int&cantMateriales){
-    for(int i=0;i<MAX_LECTORES;i++){ //Iterando en la colección de lectores
-        if(lectores[i]!=nullptr && lectores[i]->getCi()==ci){ //Si el índice actual NO es nulo y la cédula es igual a la ingresada por parámetros
-            cantMateriales=lectores[i]->getCantidadPrestados(); //El parámetro cantMateriales es igualado a la cantidad de materiales prestados del lector.
-            if(cantMateriales==0){ //Si el lector no tiene préstamos
+    for(int i=0;i<MAX_LECTORES;i++){ //Iterando en la coleccion de lectores
+        if(lectores[i]!=nullptr && lectores[i]->getCi()==ci){ //Si el indice actual NO es nulo y la cedula es igual a la ingresada por parametros
+            cantMateriales=lectores[i]->getCantidadPrestados(); //El parametro cantMateriales es igualado a la cantidad de materiales prestados del lector.
+            if(cantMateriales==0){ //Si el lector no tiene prestamos
                 return nullptr; //Se devuelve null.
             }//Pero si no...
-            DtMaterial** matsPrestados = new DtMaterial*[cantMateriales]; //Se crea un array dinámico de punteros de tipo DtMaterial con "cantMateriales" lugares.
-            Prestamo* p; //Se declara un puntero a préstamo.
-            for(int j=0;j<cantMateriales;j++){ //iterando por la lista de préstamos.
-                p = lectores[i]->getPrestamo(j); //el puntero a préstamo declarado es apuntado al prestamo almacenado en el lugar "j" de la colección.
-                matsPrestados[j] = p->getMaterial()->getDtMaterial(); //posteriormente se agrega dicho préstamo al índice "j" del array dinámico.
+            DtMaterial** matsPrestados = new DtMaterial*[cantMateriales]; //Se crea un array dinamico de punteros de tipo DtMaterial con "cantMateriales" lugares.
+            Prestamo* p; //Se declara un puntero a prestamo.
+            for(int j=0;j<cantMateriales;j++){ //iterando por la lista de prestamos.
+                p = lectores[i]->getPrestamo(j); //el puntero a prestamo declarado es apuntado al prestamo almacenado en el lugar "j" de la coleccion.
+                matsPrestados[j] = p->getMaterial()->getDtMaterial(); //posteriormente se agrega dicho prestamo al indice "j" del array dinamico.
             }
-            return matsPrestados; //Luego de terminar la iteración por la lista de préstamos, devolver el array dinámico terminado.
+            return matsPrestados; //Luego de terminar la iteracion por la lista de prestamos, devolver el array dinamico terminado.
         }
-    }//Si no se encuentra un lector con la cédula especificada en parámetros...
+    }//Si no se encuentra un lector con la cedula especificada en parametros...
     throw invalid_argument("El lector ingresado no existe."); //Lanzar error.
 }
 float consultarMultaMaterial(string ci, string codigoMaterial, int diasAtraso){
-    for(int i=0; i<MAX_LECTORES; i++){ //Iterando en la colección de lectores
-        if(lectores[i]!=nullptr && lectores[i]->getCi()==ci){ //Si el índice actual NO es nulo y la cédula es igual a la ingresada por parámetros
-            int cantPrestados=lectores[i]->getCantidadPrestados(); //Se crea una variable que almacena la cantidad de préstamos que tiene este lector.
+    for(int i=0; i<MAX_LECTORES; i++){ //Iterando en la coleccion de lectores
+        if(lectores[i]!=nullptr && lectores[i]->getCi()==ci){ //Si el indice actual NO es nulo y la cedula es igual a la ingresada por parametros
+            int cantPrestados=lectores[i]->getCantidadPrestados(); //Se crea una variable que almacena la cantidad de prestamos que tiene este lector.
             Material* m; 
-            Prestamo* p; //Se declaran punteros a Material y Préstamo.
-            for(int j=0; j<cantPrestados; j++){ //Iterando en la lista de préstamos...
-                p = lectores[i]->getPrestamo(j); //El puntero a préstamo declarado es apuntado al prestamo almacenado en el lugar "j" de la colección.
-                m = p->getMaterial(); //El puntero a material es apuntado al material almacenado en el préstamo actualmente seleccionado
-                if(m->getCodigo()==codigoMaterial){ //Si dicho material es el que se está buscando
-                    return m->calcularMulta(diasAtraso); //Devolver el cálculo de multa del Material actual.
+            Prestamo* p; //Se declaran punteros a Material y Prestamo.
+            for(int j=0; j<cantPrestados; j++){ //Iterando en la lista de prestamos...
+                p = lectores[i]->getPrestamo(j); //El puntero a prestamo declarado es apuntado al prestamo almacenado en el lugar "j" de la coleccion.
+                m = p->getMaterial(); //El puntero a material es apuntado al material almacenado en el prestamo actualmente seleccionado
+                if(m->getCodigo()==codigoMaterial){ //Si dicho material es el que se esta buscando
+                    return m->calcularMulta(diasAtraso); //Devolver el calculo de multa del Material actual.
                 }
             }//En caso de que no se encuentre el material
             throw invalid_argument("El lector no posee ese material."); //Lanzar error, el lector no posee ese material.
         }
-    }//Si no se encuentra la cédula especificada
+    }//Si no se encuentra la cedula especificada
     throw invalid_argument("El lector ingresado no existe.");//Lanzar error.
 }
 DtMaterial** verPrestamosAntesDeFecha(string ci, DtFecha* fecha, int& cantPrestamos){
-    for(int i=0; i<MAX_LECTORES; i++){ //Iterando en la colección de lectores
-        if(lectores[i]!=nullptr && lectores[i]->getCi()==ci){ //Si el índice actual NO es nulo y la cédula es igual a la ingresada por parámetros
-            int prestamosTotales=lectores[i]->getCantidadPrestados(); //Se crea una variable que almacena la cantidad TOTAL de préstamos del lector.
-            Prestamo* p; //Se declara un puntero a préstamo.
-            DtMaterial** m = new DtMaterial*[prestamosTotales]; //Se crea un array dinámico de tipo DtMaterial con tamaño "prestamosTotales".
-            int k=0; //Se crea variable k para llevar cuenta de qué préstamos respetan las condiciones de la operación.
-            for(int j=0; j<prestamosTotales; j++){ //Iterando en los préstamos del Lector
-                p = lectores[i]->getPrestamo(j); //Se apunta el puntero al préstamo "j" del lector.
-                if(p->getFecha()->enDias() < fecha->enDias()){ //Si el préstamo coincide con las condiciones de la operación,
-                    m[k++] = p->getMaterial()->getDtMaterial(); //Se almacena en el índice "k" del array dinámico.
+    for(int i=0; i<MAX_LECTORES; i++){ //Iterando en la coleccion de lectores
+        if(lectores[i]!=nullptr && lectores[i]->getCi()==ci){ //Si el indice actual NO es nulo y la cedula es igual a la ingresada por parametros
+            int prestamosTotales=lectores[i]->getCantidadPrestados(); //Se crea una variable que almacena la cantidad TOTAL de prestamos del lector.
+            Prestamo* p; //Se declara un puntero a prestamo.
+            DtMaterial** m = new DtMaterial*[prestamosTotales]; //Se crea un array dinamico de tipo DtMaterial con tamaño "prestamosTotales".
+            int k=0; //Se crea variable k para llevar cuenta de que prestamos respetan las condiciones de la operacion.
+            for(int j=0; j<prestamosTotales; j++){ //Iterando en los prestamos del Lector
+                p = lectores[i]->getPrestamo(j); //Se apunta el puntero al prestamo "j" del lector.
+                if(p->getFecha()->enDias() < fecha->enDias()){ //Si el prestamo coincide con las condiciones de la operacion,
+                    m[k++] = p->getMaterial()->getDtMaterial(); //Se almacena en el indice "k" del array dinamico.
                 }  
             }
-            if(k==0){ //Si ningún préstamo cumplió con las condiciones
-                cantPrestamos=0; //cantPrestamos se iguala a 0. (Esto porque el parámetro "cantPrestamos" al ser por referencia, se usa para cambiar una variable pasada por parámetro a la funcion!!)
-                delete[] m; //Se borra el array dinámico "m", ya que no se utiliza para nada en este escenario.
+            if(k==0){ //Si ningun prestamo cumplio con las condiciones
+                cantPrestamos=0; //cantPrestamos se iguala a 0. (Esto porque el parametro "cantPrestamos" al ser por referencia, se usa para cambiar una variable pasada por parametro a la funcion!!)
+                delete[] m; //Se borra el array dinamico "m", ya que no se utiliza para nada en este escenario.
                 return nullptr; //Se devuelve null para manejarlo a posteriori.
-            }//Pero, si al menos un préstamo cumple con las condiciones...
-            cantPrestamos=k; //cantPrestamos se iguala a k, porque "k" préstamos están antes de fecha.
-            return m; //Se devuelve el array dinámico.
+            }//Pero, si al menos un prestamo cumple con las condiciones...
+            cantPrestamos=k; //cantPrestamos se iguala a k, porque "k" prestamos estan antes de fecha.
+            return m; //Se devuelve el array dinamico.
         }
-    }//Si la cédula no coincide con ningún lector registrado...
+    }//Si la cedula no coincide con ningun lector registrado...
     throw invalid_argument("El lector ingresado no existe."); //Lanzar error.
 }
-void agregarMaterial(DtMaterial * dtMaterial){
-    if(dtMaterial!=nullptr && existeMaterial(dtMaterial->getCodigo())){ //Esto no creo que amerite comentarios.
-        throw invalid_argument("Ya existe un material con ese código.");
+void agregarMaterial(DtMaterial * dtm){
+    if(dtm!=nullptr && existeMaterial(dtm->getCodigo())){ //Esto no creo que amerite comentarios.
+        throw invalid_argument("Ya existe un material con ese codigo.");
     }
-    for(int i=0; i<MAX_MATERIALES; i++){ //Recorriendo la colección de materiales...
-        if(materiales[i]==nullptr){ //Si el índice actual es igual es nulo
-            DtLibro* dtL = dynamic_cast<DtLibro*>(dtMaterial); //Se intenta hacer dynamic_cast del "DtMaterial" pasado por parámetro. Si este cast devuelve null, significa que NO es DtLibro.
-            DtRevista* dtR = dynamic_cast<DtRevista*>(dtMaterial); //Lo mismo que arriba, solo que si devuelve null, significa que NO es DtRevista.
+    for(int i=0; i<MAX_MATERIALES; i++){ //Recorriendo la coleccion de materiales...
+        if(materiales[i]==nullptr){ //Si el indice actual es igual es nulo
+            DtLibro* dtL = dynamic_cast<DtLibro*>(dtm); //Se intenta hacer dynamic_cast del "DtMaterial" pasado por parametro. Si este cast devuelve null, significa que NO es DtLibro.
+            DtRevista* dtR = dynamic_cast<DtRevista*>(dtm); //Lo mismo que arriba, solo que si devuelve null, significa que NO es DtRevista.
             if(dtL != nullptr){ //Si dtL (DtLibro) no es nulo...
                 materiales[i] = new Libro(dtL); //Significa que el material a agregar es un libro.
             }else if(dtR!=nullptr){ //Pero, si dtR no es nulo...
@@ -153,13 +155,14 @@ void agregarMaterial(DtMaterial * dtMaterial){
             }else{ //Y si se da el caso de que ambos dan null??
                 throw invalid_argument("Tipo de dato desconocido."); //Lanzar error, aunque por diseño nunca va a pasar.
             }
-            delete dtMaterial; //Luego de crear el objeto de Libro o Revista con el datatype, hacemos delete del DT, ya que su función terminó.
-            return; //Finalmente, cortamos la función por acá.
+            delete dtm; //Luego de crear el objeto de Libro o Revista con el datatype, hacemos delete del DT, ya que su funcion termino.
+            return; //Finalmente, cortamos la funcion por aca.
         }
     }//En caso de que no haya espacios nulos...
-    throw invalid_argument("La colección de materiales está llena."); //Lanzar error.
+    throw invalid_argument("La coleccion de materiales esta llena."); //Lanzar error.
 }
 int main(){
+
 //INICIALIZACION DE ARREGLOS
 for(int i=0; i<MAX_MATERIALES; i++){
     materiales[i] = nullptr;
@@ -169,9 +172,8 @@ for(int i=0; i<MAX_LECTORES; i++){
 }
 int opcion=-1;
 while(opcion!=0){
-    setlocale(LC_ALL, "");
     mostrarMenu();
-    cout << "Opción: ";
+    cout << "Opcion: ";
     cin >> opcion;
     switch(opcion){
         case 0:
@@ -180,7 +182,7 @@ while(opcion!=0){
             string ci = "", nombre = "", fecha = "";
             string diaStr, mesStr, anioStr;
             DtFecha* fechaRegistro = nullptr;
-            cout << "\nIngrese la cédula de el/la lector/a";
+            cout << "\nIngrese la cedula de el/la lector/a";
             cin >> ci;
             cout << "\nIngrese el nombre de el/la lector/a";
             cin >> nombre;
@@ -194,16 +196,20 @@ while(opcion!=0){
             int mes = stoi(mesStr);
             int anio = stoi(anioStr);
             fechaRegistro = new DtFecha(dia, mes, anio);
-            registrarLector(ci, nombre, fechaRegistro);
+            try{
+                registrarLector(ci, nombre, fechaRegistro);
+            }catch(const invalid_argument &e){
+                cout << "ERROR: " << e.what() << endl;
+            }
         break;}
         case 2:{
             string ci = "", codigo = "", fecha = "";
             string diaStr, mesStr, anioStr;
             int duracionPrestamo;
             DtFecha* fechaPrestamo;
-            cout << "\nIngrese la cédula del lector prestatario: \n > ";
+            cout << "\nIngrese la cedula del lector prestatario: \n > ";
             cin >> ci;
-            cout << "\nIngrese el código del material que se prestará: \n > ";
+            cout << "\nIngrese el codigo del material que se prestara: \n > ";
             cin >> codigo;
             cout << "\nIngrese la fecha de registro (Formato DD/MM/YYYY): \n > ";
             cin >> fecha;
@@ -215,9 +221,13 @@ while(opcion!=0){
             int mes = stoi(mesStr);
             int anio = stoi(anioStr);
             fechaPrestamo = new DtFecha(dia, mes, anio);
-            cout << "\nIngrese la duración en días del préstamo: \n > ";
+            cout << "\nIngrese la duracion en dias del prestamo: \n > ";
             cin >> duracionPrestamo;
-            agregarPrestamo(ci, codigo, fechaPrestamo, duracionPrestamo);
+            try{
+                agregarPrestamo(ci, codigo, fechaPrestamo, duracionPrestamo);
+            }catch(const invalid_argument &e){
+                cout << "ERROR: " << e.what() << endl;
+            }
         break;}
         case 3:
         break;
@@ -229,31 +239,31 @@ while(opcion!=0){
             DtMaterial* mat = nullptr;
             int opc_material = 0;
             while((opc_material < 1) || (opc_material>2)){
-                cout << "¿Qué tipo de Material desea ingresar?" << endl <<
+                cout << "¿Que tipo de Material desea ingresar?" << endl <<
                         "1) Libro" << endl <<
                         "2) Revista" << endl <<
                         "\t> ";
                 cin >> opc_material;
                 if(opc_material < 1 || opc_material > 2){
-                    cout << "Opción inválida. Vuelta a intentarlo." << endl;
+                    cout << "Opcion invalida. Vuelta a intentarlo." << endl;
                 }
             }
             string codigo, titulo;
             int anio;
-            cout << "Ingrese el código del material: ";
+            cout << "Ingrese el codigo del material: ";
             cin >> codigo;
-            cout << "\nIngrese el título del material:";
+            cout << "\nIngrese el titulo del material:";
             cin >> titulo;
-            cout << "\nIngrese el año de publicación del material:";
+            cout << "\nIngrese el año de publicacion del material:";
             cin >> anio;
             switch(opc_material){
                     case 1:
                     {
                         string autor;
                         int cantPag;
-                        cout << "\n¿Quién es el autor del libro?: ";
+                        cout << "\n¿Quien es el autor del libro?: ";
                         cin >> autor;
-                        cout << "\n¿Cuántas páginas tiene el libro?";
+                        cout << "\n¿Cuantas paginas tiene el libro?";
                         cin >> cantPag;
                         mat = new DtLibro(codigo, titulo, autor, anio, cantPag);
                         break;
@@ -263,14 +273,14 @@ while(opcion!=0){
                         int numeroEdicion;
                         char SiNo='0';
                         bool esMensual;
-                        cout << "\nIngrese el número de edición de la revista: ";
+                        cout << "\nIngrese el numero de edicion de la revista: ";
                         cin >> numeroEdicion;
                         do{
                             cout << "\n¿Es mensual? (S/N)";
                             cin >> SiNo;
                             SiNo = toupper(SiNo);
                             if(SiNo != 'N' && SiNo != 'S'){
-                                cout << "\nOpción inválida. Intente de nuevo." << endl;
+                                cout << "\nOpcion invalida. Intente de nuevo." << endl;
                             }
                         }while(SiNo != 'N' && SiNo != 'S');
                         esMensual = (SiNo == 'S');
@@ -278,8 +288,11 @@ while(opcion!=0){
                     }
                     break;
             }
-            agregarMaterial(mat);
-            delete mat;
+            try{
+                agregarMaterial(mat);
+            }catch(const invalid_argument &e){
+                cout << "ERROR: " << e.what() << endl;
+            }
             break;}
         default:
         break;
