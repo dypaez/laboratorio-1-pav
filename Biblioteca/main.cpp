@@ -176,16 +176,17 @@ while(opcion!=0){
     cin >> opcion;
     switch(opcion){
         case 0:
+            cout << "Adios!" << endl;
         break;
         case 1:{
             string ci = "", nombre = "", fecha = "";
             string diaStr, mesStr, anioStr;
             DtFecha* fechaRegistro = nullptr;
-            cout << "\nIngrese la cedula de el/la lector/a";
+            cout << "\nIngrese la cedula de el/la lector/a: \n > ";
             cin >> ci;
-            cout << "\nIngrese el nombre de el/la lector/a";
+            cout << "\nIngrese el nombre de el/la lector/a: \n > ";
             cin >> nombre;
-            cout << "\nIngrese la fecha de registro (Formato DD/MM/YYYY):";
+            cout << "\nIngrese la fecha de registro (Formato DD/MM/YYYY): \n > ";
             cin >> fecha;
             stringstream ss(fecha);
             getline(ss, diaStr, '/');
@@ -230,16 +231,18 @@ while(opcion!=0){
         break;}
         case 3:{
             string ci = "";
-            cout << "\nIngrese la cedula de el/la lector/a";
+            cout << "\nIngrese la cedula de el/la lector/a: \n > ";
             cin >> ci;
             try{
                 int cantMateriales = 0;
                 DtMaterial** m = obtenerMaterialesPrestados(ci,cantMateriales);
                 if(m==nullptr){
-                    throw invalid_argument ("No tiene materiales prestados");
+                    throw invalid_argument ("No tiene materiales prestados.");
                 }
+                cout << "\nPrestamos de el/la lector/a de CI " << ci << ".\n";
                 for(int i=0; i<cantMateriales; i++){
                     m[i]->mostrarDatos();
+                    cout << endl;
                 }
                 for(int i=0; i<cantMateriales; i++){
                     delete m[i];
@@ -251,12 +254,12 @@ while(opcion!=0){
         break;}
         case 4:{
             string ci = "", codigoMaterial = "";
-            cout << "\nIngrese la cedula de el/la lector/a";
+            cout << "\nIngrese la cedula de el/la lector/a: \n > ";
             cin >> ci;
-            cout << "\nIngrese el codigo del material";
+            cout << "\nIngrese el codigo del material: \n > ";
             cin >> codigoMaterial;
             int diasAtraso = 0;
-            cout << "\nIngrese los dias de atraso del material";
+            cout << "\nIngrese los dias de atraso del material: \n > ";
             cin >> diasAtraso;
             try{
                 float m = consultarMultaMaterial(ci, codigoMaterial, diasAtraso);
@@ -265,8 +268,42 @@ while(opcion!=0){
                 cout << "ERROR: " << e.what() << endl;
             }
         break;}
-        case 5:
-        break;
+        case 5:{
+            string ci = "", fecha = "";
+            string diaStr, mesStr, anioStr;
+            int cantPrestamos;
+            DtFecha* fechaDT;
+            cout << "\nIngrese la cedula del lector prestatario: \n > ";
+            cin >> ci;
+            cout << "\nIngrese la fecha de registro (Formato DD/MM/YYYY): \n > ";
+            cin >> fecha;
+            stringstream ss(fecha);
+            getline(ss, diaStr, '/');
+            getline(ss, mesStr, '/');
+            getline(ss, anioStr, '/');
+            int dia = stoi(diaStr);
+            int mes = stoi(mesStr);
+            int anio = stoi(anioStr);
+            fechaDT = new DtFecha(dia, mes, anio);
+            try {
+                DtMaterial** m = verPrestamosAntesDeFecha (ci, fechaDT, cantPrestamos);
+                if (m==nullptr) {
+                    throw invalid_argument ("No se encontraron prestamos anteriores a la fecha indicada.");
+                }
+                cout << "Prestamos de el/la lector/a de CI " << ci << ", antes de " << dia << "/" << mes << "/" << anio << endl;
+                for (int i = 0; i < cantPrestamos; i++){
+                    m[i]->mostrarDatos();
+                    cout << endl;
+                } 
+                for (int i = 0; i < cantPrestamos; i++){
+                    delete m[i];
+                } 
+                delete[] m;
+                delete fechaDT;
+            }catch (const invalid_argument &e) {
+                cout << "ERROR: " << e.what() << endl;
+            }
+        break;}
         case 6:{
             DtMaterial* mat = nullptr;
             int opc_material = 0;
@@ -282,20 +319,20 @@ while(opcion!=0){
             }
             string codigo, titulo;
             int anio;
-            cout << "Ingrese el codigo del material: ";
+            cout << "Ingrese el codigo del material: \n > ";
             cin >> codigo;
-            cout << "\nIngrese el titulo del material:";
+            cout << "\nIngrese el titulo del material: \n > ";
             cin >> titulo;
-            cout << "\nIngrese el año de publicacion del material:";
+            cout << "\nIngrese el año de publicacion del material: \n > ";
             cin >> anio;
             switch(opc_material){
                     case 1:
                     {
                         string autor;
                         int cantPag;
-                        cout << "\n¿Quien es el autor del libro?: ";
+                        cout << "\n¿Quien es el autor del libro? \n > ";
                         cin >> autor;
-                        cout << "\n¿Cuantas paginas tiene el libro?";
+                        cout << "\n¿Cuantas paginas tiene el libro? \n > ";
                         cin >> cantPag;
                         mat = new DtLibro(codigo, titulo, autor, anio, cantPag);
                         break;
@@ -305,7 +342,7 @@ while(opcion!=0){
                         int numeroEdicion;
                         char SiNo='0';
                         bool esMensual;
-                        cout << "\nIngrese el numero de edicion de la revista: ";
+                        cout << "\nIngrese el numero de edicion de la revista: \n > ";
                         cin >> numeroEdicion;
                         do{
                             cout << "\n¿Es mensual? (S/N)";
