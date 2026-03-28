@@ -15,7 +15,6 @@ ARREGLOS
 */
 Lector* lectores[MAX_LECTORES];
 Material* materiales[MAX_MATERIALES];
-
 /*
 ARREGLOS
 */
@@ -229,10 +228,43 @@ while(opcion!=0){
                 cout << "ERROR: " << e.what() << endl;
             }
         break;}
-        case 3:
-        break;
-        case 4:
-        break;
+        case 3:{
+            string ci = "";
+            cout << "\nIngrese la cedula de el/la lector/a";
+            cin >> ci;
+            try{
+                int cantMateriales = 0;
+                DtMaterial** m = obtenerMaterialesPrestados(ci,cantMateriales);
+                if(m==nullptr){
+                    throw invalid_argument ("No tiene materiales prestados");
+                }
+                for(int i=0; i<cantMateriales; i++){
+                    m[i]->mostrarDatos();
+                }
+                for(int i=0; i<cantMateriales; i++){
+                    delete m[i];
+                }
+                delete[] m;
+            }catch(const invalid_argument &e){
+                cout << "ERROR: " << e.what() << endl;
+            }
+        break;}
+        case 4:{
+            string ci = "", codigoMaterial = "";
+            cout << "\nIngrese la cedula de el/la lector/a";
+            cin >> ci;
+            cout << "\nIngrese el codigo del material";
+            cin >> codigoMaterial;
+            int diasAtraso = 0;
+            cout << "\nIngrese los dias de atraso del material";
+            cin >> diasAtraso;
+            try{
+                float m = consultarMultaMaterial(ci, codigoMaterial, diasAtraso);
+                cout << "\nLa multa del material es: " << m << endl;
+            }catch(const invalid_argument &e){
+                cout << "ERROR: " << e.what() << endl;
+            }
+        break;}
         case 5:
         break;
         case 6:{
