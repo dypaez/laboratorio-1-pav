@@ -1,4 +1,3 @@
-using namespace std;
 #include "lector.h"
 using namespace std;
 Lector::Lector(string ci, string nombre, DtFecha* fechaRegistro){
@@ -49,6 +48,16 @@ bool Lector::agregarPrestamo(Prestamo* p) {
         }
     }
     return false; //Error
+}
+Material* Lector::buscarMaterialPrestado(string codigoMaterial){
+    Prestamo* p = nullptr;
+    for(int i=0; i<getCantidadPrestados(); i++){
+        p = prestamos[i];
+        if(p && p->getMaterial()->getCodigo()==codigoMaterial){
+            return p->getMaterial();
+        }
+    }
+    return nullptr;
 }
 void Lector::setCi(string ci) {
     this->ci = ci;

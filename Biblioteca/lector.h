@@ -14,7 +14,6 @@ class Lector {
         Prestamo* prestamos[MAX_PRESTAMOS];
         int cantidadPrestados;
     public:
-        Lector();
         Lector(std::string ci, std::string nombre, DtFecha* fechaRegistro);
         std::string getCi();
         std::string getNombre();
@@ -23,6 +22,7 @@ class Lector {
         int getCantidadPrestados();
         bool prestamoLleno();
         bool agregarPrestamo(Prestamo* p);
+        Material* buscarMaterialPrestado(std::string codigoMaterial);
         void setCi(std::string);
         void setNombre(std::string);
         void setFechaRegistro(DtFecha* fechaRegistro);

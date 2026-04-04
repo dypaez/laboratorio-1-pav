@@ -26,6 +26,14 @@ bool existeLector(string ci){
     }
     return false;
 }
+Lector* encontrarLector(string ci){
+    for(int i=0; i<MAX_LECTORES; i++){
+        if(lectores[i]!=nullptr && lectores[i]->getCi()==ci){
+            return lectores[i];
+        }
+    }
+    return nullptr;
+}
 bool existeMaterial(string codigo){
     for(int i=0; i<MAX_MATERIALES; i++){
         if(materiales[i]!=nullptr && materiales[i]->getCodigo() == codigo){
@@ -33,6 +41,14 @@ bool existeMaterial(string codigo){
         }
     }
     return false;
+}
+Material* encontrarMaterial(string codigo){
+    for(int i=0; i<MAX_MATERIALES; i++){
+        if(materiales[i]!=nullptr && materiales[i]->getCodigo() == codigo){
+            return materiales[i];
+        }
+    }
+    return nullptr;
 }
 void mostrarMenu(){
     
@@ -59,107 +75,106 @@ void registrarLector(string ci, string nombre, DtFecha* fechaRegistro){
     throw invalid_argument("No hay espacio en la coleccion de lectores."); //Lanzar error.
 }
 void agregarPrestamo(string ci, string codigoMaterial, DtFecha * fechaPrestamo, int diasPermitidos){
-    for(int i=0; i<MAX_LECTORES; i++){ //Iterando en la coleccion de lectores
-        if(lectores[i]!=nullptr && lectores[i]->getCi() == ci){ //Si el indice actual NO es nulo y la cedula es igual a la ingresada por parametros
-            if(lectores[i]->prestamoLleno()){ //Se revisa si tiene la lista de prestamos llena
-                throw invalid_argument("El lector ya tiene el maximo de prestamos."); //En caso de tenerla, lanza error, cancelando el proceso
-            } //Pero si no...
-            Material* material; // Se declara un puntero a Material
-            for(int j=0; j<MAX_MATERIALES; j++){ //Iterando en la coleccion de materiales
-                if(materiales[j]!=nullptr && materiales[j]->getCodigo() == codigoMaterial){ //Si el material actual NO es nulo y su codigo es igual al pasado por parametros
-                    material = materiales[j]; //el puntero a material declarado anteriormente, ahora apunta al material pasado por parametro
-                    Prestamo* prestamo = new Prestamo(fechaPrestamo, material, diasPermitidos); //Se crea una instancia de la clase Prestamo.
-                    lectores[i]->agregarPrestamo(prestamo); //Y posteriormente, se añade a la coleccion de prestamos del lector.
-                    cout << "Prestamo registrado con exito." << endl; //¡EXITO!
-                    return;
-                }
-            }//Si no se hallan coincidencias con el codigo de material indicado...
-            throw invalid_argument("El material especificado no existe."); //Lanzar error.
-        }
-    }//Si no se encuentran coincidencias con la cedula indicada por parametro...
-    throw invalid_argument("El lector ingresado no existe."); //Lanzar error.
+    Lector* l = encontrarLector(ci);
+    Material* m = encontrarMaterial(codigoMaterial);
+    if(l==nullptr){ //Si el lector no existe
+        throw invalid_argument("El lector ingresado no existe."); //Lanzar error.
+    }
+    if(m==nullptr){ //Si el material no existe
+        throw invalid_argument("El material especificado no existe."); //Lanzar error.
+    }
+    if(l->prestamoLleno()){ //Si el lector tiene la colección de préstamos llena
+        throw invalid_argument("El lector ya tiene el maximo de prestamos."); //Lanzar error.
+    }
+    //Si ninguna condición que invalide el ingreso se cumple
+    Prestamo* prestamo = new Prestamo(fechaPrestamo, m, diasPermitidos); //Se crea una instancia de la clase Prestamo.
+    l->agregarPrestamo(prestamo); //Y posteriormente, se añade a la coleccion de prestamos del lector.
+    cout << "Prestamo registrado con exito." << endl; //¡EXITO!
+    return;
+    
+
 }
-DtMaterial** obtenerMaterialesPrestados(string ci, int&cantMateriales){
-    for(int i=0;i<MAX_LECTORES;i++){ //Iterando en la coleccion de lectores
-        if(lectores[i]!=nullptr && lectores[i]->getCi()==ci){ //Si el indice actual NO es nulo y la cedula es igual a la ingresada por parametros
-            cantMateriales=lectores[i]->getCantidadPrestados(); //El parametro cantMateriales es igualado a la cantidad de materiales prestados del lector.
-            if(cantMateriales==0){ //Si el lector no tiene prestamos
-                return nullptr; //Se devuelve null.
-            }//Pero si no...
-            DtMaterial** matsPrestados = new DtMaterial*[cantMateriales]; //Se crea un array dinamico de punteros de tipo DtMaterial con "cantMateriales" lugares.
-            Prestamo* p; //Se declara un puntero a prestamo.
-            for(int j=0;j<cantMateriales;j++){ //iterando por la lista de prestamos.
-                p = lectores[i]->getPrestamo(j); //el puntero a prestamo declarado es apuntado al prestamo almacenado en el lugar "j" de la coleccion.
-                matsPrestados[j] = p->getMaterial()->getDtMaterial(); //posteriormente se agrega dicho prestamo al indice "j" del array dinamico.
-            }
-            return matsPrestados; //Luego de terminar la iteracion por la lista de prestamos, devolver el array dinamico terminado.
-        }
-    }//Si no se encuentra un lector con la cedula especificada en parametros...
-    throw invalid_argument("El lector ingresado no existe."); //Lanzar error.
-}
-float consultarMultaMaterial(string ci, string codigoMaterial, int diasAtraso){
-    for(int i=0; i<MAX_LECTORES; i++){ //Iterando en la coleccion de lectores
-        if(lectores[i]!=nullptr && lectores[i]->getCi()==ci){ //Si el indice actual NO es nulo y la cedula es igual a la ingresada por parametros
-            int cantPrestados=lectores[i]->getCantidadPrestados(); //Se crea una variable que almacena la cantidad de prestamos que tiene este lector.
-            Material* m; 
-            Prestamo* p; //Se declaran punteros a Material y Prestamo.
-            for(int j=0; j<cantPrestados; j++){ //Iterando en la lista de prestamos...
-                p = lectores[i]->getPrestamo(j); //El puntero a prestamo declarado es apuntado al prestamo almacenado en el lugar "j" de la coleccion.
-                m = p->getMaterial(); //El puntero a material es apuntado al material almacenado en el prestamo actualmente seleccionado
-                if(m->getCodigo()==codigoMaterial){ //Si dicho material es el que se esta buscando
-                    return m->calcularMulta(diasAtraso); //Devolver el calculo de multa del Material actual.
-                }
-            }//En caso de que no se encuentre el material
-            throw invalid_argument("El lector no posee ese material."); //Lanzar error, el lector no posee ese material.
-        }
-    }//Si no se encuentra la cedula especificada
-    throw invalid_argument("El lector ingresado no existe.");//Lanzar error.
-}
-DtMaterial** verPrestamosAntesDeFecha(string ci, DtFecha* fecha, int& cantPrestamos){
-    for(int i=0; i<MAX_LECTORES; i++){ //Iterando en la coleccion de lectores
-        if(lectores[i]!=nullptr && lectores[i]->getCi()==ci){ //Si el indice actual NO es nulo y la cedula es igual a la ingresada por parametros
-            int prestamosTotales=lectores[i]->getCantidadPrestados(); //Se crea una variable que almacena la cantidad TOTAL de prestamos del lector.
-            Prestamo* p; //Se declara un puntero a prestamo.
-            DtMaterial** m = new DtMaterial*[prestamosTotales]; //Se crea un array dinamico de tipo DtMaterial con tamaño "prestamosTotales".
-            int k=0; //Se crea variable k para llevar cuenta de que prestamos respetan las condiciones de la operacion.
-            for(int j=0; j<prestamosTotales; j++){ //Iterando en los prestamos del Lector
-                p = lectores[i]->getPrestamo(j); //Se apunta el puntero al prestamo "j" del lector.
-                if(p->getFecha()->enDias() < fecha->enDias()){ //Si el prestamo coincide con las condiciones de la operacion,
-                    m[k++] = p->getMaterial()->getDtMaterial(); //Se almacena en el indice "k" del array dinamico.
-                }  
-            }
-            if(k==0){ //Si ningun prestamo cumplio con las condiciones
-                cantPrestamos=0; //cantPrestamos se iguala a 0. (Esto porque el parametro "cantPrestamos" al ser por referencia, se usa para cambiar una variable pasada por parametro a la funcion!!)
-                delete[] m; //Se borra el array dinamico "m", ya que no se utiliza para nada en este escenario.
-                return nullptr; //Se devuelve null para manejarlo a posteriori.
-            }//Pero, si al menos un prestamo cumple con las condiciones...
-            cantPrestamos=k; //cantPrestamos se iguala a k, porque "k" prestamos estan antes de fecha.
-            return m; //Se devuelve el array dinamico.
-        }
-    }//Si la cedula no coincide con ningun lector registrado...
-    throw invalid_argument("El lector ingresado no existe."); //Lanzar error.
-}
+
 void agregarMaterial(DtMaterial * dtm){
-    if(dtm!=nullptr && existeMaterial(dtm->getCodigo())){ //Esto no creo que amerite comentarios.
+    if(existeMaterial(dtm->getCodigo())){
         throw invalid_argument("Ya existe un material con ese codigo.");
     }
     for(int i=0; i<MAX_MATERIALES; i++){ //Recorriendo la coleccion de materiales...
-        if(materiales[i]==nullptr){ //Si el indice actual es igual es nulo
+        if(!materiales[i]){ //Si el indice actual es igual es nulo
             DtLibro* dtL = dynamic_cast<DtLibro*>(dtm); //Se intenta hacer dynamic_cast del "DtMaterial" pasado por parametro. Si este cast devuelve null, significa que NO es DtLibro.
             DtRevista* dtR = dynamic_cast<DtRevista*>(dtm); //Lo mismo que arriba, solo que si devuelve null, significa que NO es DtRevista.
-            if(dtL != nullptr){ //Si dtL (DtLibro) no es nulo...
+            if(dtL){ //Si dtL (DtLibro) no es nulo...
                 materiales[i] = new Libro(dtL); //Significa que el material a agregar es un libro.
-            }else if(dtR!=nullptr){ //Pero, si dtR no es nulo...
+                cout << "\nLibro registrado con exito." << endl;
+            }else if(dtR){ //Pero, si dtR no es nulo...
                 materiales[i] = new Revista(dtR); //Significa que el material a agregar es una revista.
+                cout << "\nRevista registrada con exito." << endl;
             }else{ //Y si se da el caso de que ambos dan null??
+                delete dtm;
                 throw invalid_argument("Tipo de dato desconocido."); //Lanzar error, aunque por diseño nunca va a pasar.
             }
             delete dtm; //Luego de crear el objeto de Libro o Revista con el datatype, hacemos delete del DT, ya que su funcion termino.
             return; //Finalmente, cortamos la funcion por aca.
         }
     }//En caso de que no haya espacios nulos...
+    delete dtm;
     throw invalid_argument("La coleccion de materiales esta llena."); //Lanzar error.
 }
+DtMaterial** obtenerMaterialesPrestados(string ci, int&cantMateriales){
+    Lector* l = encontrarLector(ci);
+    if(l==nullptr){//Si el lector indicado no existe.
+        throw invalid_argument("El lector ingresado no existe."); //Lanzar error.
+    }
+    cantMateriales=l->getCantidadPrestados(); //El parametro cantMateriales es igualado a la cantidad de materiales prestados del lector.
+    if(cantMateriales==0){ //Si el lector no tiene prestamos
+        return nullptr; //Se devuelve null.
+    }//Pero si no...
+    DtMaterial** matsPrestados = new DtMaterial*[cantMateriales]; //Se crea un array dinamico de punteros de tipo DtMaterial con "cantMateriales" lugares.
+    Prestamo* p; //Se declara un puntero a prestamo.
+    Material* m;
+    for(int j=0;j<cantMateriales;j++){ //iterando por la lista de prestamos.
+        p = l->getPrestamo(j); //el puntero a prestamo es apuntado al prestamo almacenado en el lugar "j" de la coleccion.
+        m = p->getMaterial(); //el puntero a material es apuntado al material de dicho prestamo.
+        matsPrestados[j] = m->getDtMaterial(); //posteriormente se agrega dicho prestamo al indice "j" del array dinamico.
+    }
+    return matsPrestados; //Luego de terminar la iteracion por la lista de prestamos, devolver el array dinamico terminado.
+}
+float consultarMultaMaterial(string ci, string codigoMaterial, int diasAtraso){
+    Lector* l = encontrarLector(ci);
+    if(!l){ //Si no existe el lector
+        throw invalid_argument("El lector ingresado no existe.");//Lanzar error.
+    }
+    Material* m = l->buscarMaterialPrestado(codigoMaterial);
+    if(!m){
+        throw invalid_argument("El lector no posee ese material."); //Lanzar error, el lector no posee ese material.
+    }
+    return m->calcularMulta(diasAtraso); //Devolver el calculo de multa del Material actual.
+}
+DtMaterial** verPrestamosAntesDeFecha(string ci, DtFecha* fecha, int& cantPrestamos){
+    Lector* l = encontrarLector(ci);
+    if(!l){
+        throw invalid_argument("El lector ingresado no existe."); //Lanzar error.
+    }
+    int prestamosTotales=l->getCantidadPrestados(); //Se crea una variable que almacena la cantidad TOTAL de prestamos del lector.
+    Prestamo* p; //Se declara un puntero a prestamo.
+    DtMaterial** m = new DtMaterial*[prestamosTotales]; //Se crea un array dinamico de tipo DtMaterial con tamaño "prestamosTotales".
+    int k=0; //Se crea variable k para llevar cuenta de que prestamos respetan las condiciones de la operacion.
+    for(int j=0; j<prestamosTotales; j++){ //Iterando en los prestamos del Lector
+        p = l->getPrestamo(j); //Se apunta el puntero al prestamo "j" del lector.
+        if(p->getFecha()->enDias() < fecha->enDias()){ //Si el prestamo coincide con las condiciones de la operacion,
+            m[k++] = p->getMaterial()->getDtMaterial(); //Se almacena en el indice "k" del array dinamico.
+        }  
+    }
+    if(k==0){ //Si ningun prestamo cumplio con las condiciones
+        cantPrestamos=0; //cantPrestamos se iguala a 0. (Esto porque el parametro "cantPrestamos" al ser por referencia, se usa para cambiar una variable pasada por parametro a la funcion!!)
+        delete[] m; //Se borra el array dinamico "m", ya que no se utiliza para nada en este escenario.
+        return nullptr; //Se devuelve null para manejarlo a posteriori.
+    }//Pero, si al menos un prestamo cumple con las condiciones...
+    cantPrestamos=k; //cantPrestamos se iguala a k, porque "k" prestamos estan antes de fecha.
+    return m; //Se devuelve el array dinamico.
+}
+
+
 int main(){
 
 //INICIALIZACION DE ARREGLOS
@@ -176,6 +191,12 @@ while(opcion!=0){
     cin >> opcion;
     switch(opcion){
         case 0:
+            for(int i=0;i<MAX_MATERIALES; i++){
+                delete materiales[i];
+            }
+            for(int i=0;i<MAX_LECTORES; i++){
+                delete lectores[i];
+            }
             cout << "Adios!" << endl;
         break;
         case 1:{
@@ -369,4 +390,3 @@ while(opcion!=0){
 }
 return 0;
 }
-
